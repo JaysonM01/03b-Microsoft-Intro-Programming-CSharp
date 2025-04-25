@@ -2,7 +2,7 @@
 {
     public static int FindMax(int[] numbers)
     {
-        int max = 0;
+        int max = int.MinValue;
         for (int i = 0; i < numbers.Length; i++)
         {
             if (numbers[i] > max)

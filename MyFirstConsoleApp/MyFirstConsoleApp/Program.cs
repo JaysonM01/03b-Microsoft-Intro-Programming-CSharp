@@ -21,3 +21,15 @@ public class Cat : Animal
         Console.WriteLine("*meow*");
     }
 }
+
+public class Program
+{
+    public static void Main()
+    {
+        Animal Pitbull = new Dog();
+        Animal Persian = new Cat();
+        Pitbull.MakeSound();
+        Persian.MakeSound();
+        
+    }
+}

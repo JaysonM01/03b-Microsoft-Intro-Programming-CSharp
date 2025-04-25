@@ -1,22 +1,16 @@
-﻿public class Program
+﻿public class Calculator
 {
-    public static int FindMax(int[] numbers)
+    public int num1;
+    public int num2;
+
+    public static int Add(int num1, int num2)
     {
-        int max = int.MinValue;
-        for (int i = 0; i < numbers.Length; i++)
-        {
-            if (numbers[i] > max)
-            {
-                max = numbers[i];
-            }
-        }
-        return max;
+        return num1 + num2;
     }
 
     public static void Main()
     {
-        int[] myNumbers = { -5, -10, -3, -8, -2 };
-        int maxNumber = FindMax(myNumbers);
-        Console.WriteLine("The maximum number is: " + maxNumber);
+        Console.WriteLine(Add(10,20));
+        
     }
 }

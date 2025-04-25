@@ -1,4 +1,3 @@
 
-/MyFirstConsoleApp/MyFirstConsoleApp/bin/Debug/net9.0
-/MyFirstConsoleApp/MyFirstConsoleApp/bin
-/MyFirstConsoleApp/MyFirstConsoleApp/obj
+**/bin/
+**/obj/

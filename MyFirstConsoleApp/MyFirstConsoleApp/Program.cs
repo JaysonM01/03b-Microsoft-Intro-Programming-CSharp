@@ -1,23 +1,21 @@
-﻿// Method to divide two numbers with error handling
-using System;
+﻿using System;
 public class Program
 {
-public static double DivideNumbers(double numerator, double denominator)
+// Method to calculate the average of an array
+public static double CalculateAverage(int[] numbers)
 {
-    if (denominator == 0)
+    int sum = 0;
+    for (int i = 0; i < numbers.Length; i++)
     {
-        Console.WriteLine("Error: Division by zero is not allowed.");
-        return double.NaN; // Return "Not a Number" to indicate an error
+        sum += numbers[i];
     }
-    
-    double result = numerator / denominator;
-    return result;
+    return sum / numbers.Length;
 }
 
 public static void Main()
 {
-    // Attempt to divide 10 by 0
-    double result = DivideNumbers(10, 0);
-    Console.WriteLine("The result is: " + result);
+    int[] numbers = {}; // Empty array
+    double average = CalculateAverage(numbers);
+    Console.WriteLine("The average is: " + average);
 }
 }

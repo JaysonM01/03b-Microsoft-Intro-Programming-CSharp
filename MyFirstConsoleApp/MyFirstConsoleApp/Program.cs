@@ -1,22 +1,23 @@
-﻿public class Program
+﻿public class Animal
 {
-    public static int FindMax(int[] numbers)
+    public virtual void MakeSound()
     {
-        int max = int.MinValue;
-        for (int i = 0; i < numbers.Length; i++)
-        {
-            if (numbers[i] > max)
-            {
-                max = numbers[i];
-            }
-        }
-        return max;
+        Console.WriteLine("Some Sounds");
     }
+}
 
-    public static void Main()
+public class Dog : Animal
+{
+    public override void MakeSound()
     {
-        int[] myNumbers = { -5, -10, -3, -8, -2 };
-        int maxNumber = FindMax(myNumbers);
-        Console.WriteLine("The maximum number is: " + maxNumber);
+        Console.WriteLine("*woof*");
+    }
+}
+
+public class Cat : Animal
+{
+    public override void MakeSound()
+    {
+        Console.WriteLine("*meow*");
     }
 }

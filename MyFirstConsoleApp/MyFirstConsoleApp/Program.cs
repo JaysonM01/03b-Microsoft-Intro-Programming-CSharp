@@ -1,16 +1,15 @@
-﻿public class Calculator
+﻿public class NumberDisplay
 {
-    public int num1;
-    public int num2;
 
-    public static int Add(int num1, int num2)
+    public static void DisplayNumbers()
     {
-        return num1 + num2;
+        for ( int i = 0; i < 10 ; i++ )
+        {
+            Console.WriteLine(i + 1);
+        }
     }
-
     public static void Main()
     {
-        Console.WriteLine(Add(10,20));
-        
+        DisplayNumbers();
     }
 }

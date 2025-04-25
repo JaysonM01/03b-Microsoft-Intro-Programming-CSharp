@@ -1,8 +1,12 @@
-﻿public class Animal
+﻿public class Animal : IAnimal
 {
     public virtual void MakeSound()
     {
         Console.WriteLine("Some Sounds");
+    }
+    public void Eat()
+    {
+        Console.WriteLine("Some Food");
     }
 }
 
@@ -12,6 +16,10 @@ public class Dog : Animal
     {
         Console.WriteLine("*woof*");
     }
+    public void Eat()
+    {
+        Console.WriteLine("Steak");
+    }
 }
 
 public class Cat : Animal
@@ -20,16 +28,28 @@ public class Cat : Animal
     {
         Console.WriteLine("*meow*");
     }
+    public void Eat()
+    {
+        Console.WriteLine("Fish");
+    }
 }
 
 public class Program
 {
     public static void Main()
     {
-        Animal Pitbull = new Dog();
-        Animal Persian = new Cat();
+        Dog Pitbull = new Dog();
+        Cat Persian = new Cat();
         Pitbull.MakeSound();
         Persian.MakeSound();
+        Pitbull.Eat();
+        Persian.Eat();
         
     }
+}
+
+public interface IAnimal
+{
+    public void Eat();
+    
 }

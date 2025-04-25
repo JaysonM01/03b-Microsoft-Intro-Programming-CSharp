@@ -1,15 +1,15 @@
-﻿public class NumberDisplay
+﻿public class UserInput
 {
-
-    public static void DisplayNumbers()
+    public static void GreetUser()
     {
-        for ( int i = 0; i < 10 ; i++ )
-        {
-            Console.WriteLine(i + 1);
-        }
+
+        Console.WriteLine("What is your name?");
+        string name = Console.ReadLine();
+        Console.WriteLine("Hello " + name + "!");
     }
+
     public static void Main()
     {
-        DisplayNumbers();
+        GreetUser();
     }
 }

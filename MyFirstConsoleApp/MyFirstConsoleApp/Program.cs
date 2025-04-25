@@ -3,7 +3,7 @@
 // Method to calculate the final price after a discount
 public static double ApplyDiscount(double price, double discountPercentage)
 {
-    return price - discountPercentage;
+    return price - (price * discountPercentage * 0.01);
 }
 
 public static void Main()

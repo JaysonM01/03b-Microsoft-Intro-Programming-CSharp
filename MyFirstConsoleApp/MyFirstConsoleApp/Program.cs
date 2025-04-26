@@ -1,22 +1,40 @@
-﻿public class Program
+﻿public class Database
 {
-    public static int FindMax(int[] numbers)
+    private static Database instance;
+    private static readonly object lockObject = new object();
+
+    // Private constructor prevents instantiation from other classes
+    private Database() { }
+
+    public static Database GetInstance()
     {
-        int max = int.MinValue;
-        for (int i = 0; i < numbers.Length; i++)
+        if (instance == null)
         {
-            if (numbers[i] > max)
+            lock (lockObject)
             {
-                max = numbers[i];
+                if (instance == null)
+                {
+                    instance = new Database();
+                }
             }
         }
-        return max;
+        return instance;
     }
 
+    public void Connect()
+    {
+        Console.WriteLine("Database connected.");
+    }
+}
+
+public class Program
+{
     public static void Main()
     {
-        int[] myNumbers = { -5, -10, -3, -8, -2 };
-        int maxNumber = FindMax(myNumbers);
-        Console.WriteLine("The maximum number is: " + maxNumber);
+        Database db1 = Database.GetInstance();
+        Database db2 = Database.GetInstance();
+
+        db1.Connect();
+        Console.WriteLine(object.ReferenceEquals(db1, db2)); // Outputs: True
     }
 }

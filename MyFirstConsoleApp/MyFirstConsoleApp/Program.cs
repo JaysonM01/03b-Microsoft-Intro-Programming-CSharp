@@ -1,32 +1,40 @@
-﻿// Target interface
-public interface ITarget
+﻿public abstract class Animal
 {
-    void Request();
+    public abstract void Speak();
 }
 
-// Adaptee class
-public class Adaptee
+public class Dog : Animal
 {
-    public void SpecificRequest()
+    public override void Speak()
     {
-        Console.WriteLine("Specific request is called.");
+        Console.WriteLine("Woof!");
     }
 }
 
-// Adapter class
-public class Adapter : ITarget
+public class Cat : Animal
 {
-    private Adaptee adaptee;
-
-    public Adapter(Adaptee adaptee)
+    public override void Speak()
     {
-        this.adaptee = adaptee;
+        Console.WriteLine("Meow!");
     }
+}
 
-    public void Request()
+public class AnimalFactory
+{
+    public static Animal CreateAnimal(string type)
     {
-        // Convert the interface of Adaptee to the Target interface
-        adaptee.SpecificRequest();
+        if (type == "Dog")
+        {
+            return new Dog();
+        }
+        else if (type == "Cat")
+        {
+            return new Cat();
+        }
+        else
+        {
+            throw new ArgumentException("Invalid animal type");
+        }
     }
 }
 
@@ -34,9 +42,10 @@ public class Program
 {
     public static void Main()
     {
-        Adaptee adaptee = new Adaptee();
-        ITarget target = new Adapter(adaptee);
+        Animal dog = AnimalFactory.CreateAnimal("Dog");
+        dog.Speak(); // Outputs: Woof!
 
-        target.Request(); // Outputs: Specific request is called.
+        Animal cat = AnimalFactory.CreateAnimal("Cat");
+        cat.Speak(); // Outputs: Meow!
     }
 }

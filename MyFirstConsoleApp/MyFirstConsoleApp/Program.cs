@@ -1,22 +1,7 @@
-﻿public class Program
+﻿public class Person
 {
-    public static int FindMax(int[] numbers)
-    {
-        int max = int.MinValue;
-        for (int i = 0; i < numbers.Length; i++)
-        {
-            if (numbers[i] > max)
-            {
-                max = numbers[i];
-            }
-        }
-        return max;
-    }
+    public string Name { get; set; }
+    public int Age { get; set; }
 
-    public static void Main()
-    {
-        int[] myNumbers = { -5, -10, -3, -8, -2 };
-        int maxNumber = FindMax(myNumbers);
-        Console.WriteLine("The maximum number is: " + maxNumber);
-    }
+
 }

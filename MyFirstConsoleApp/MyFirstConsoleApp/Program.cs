@@ -16,9 +16,13 @@
         Person Woman = new Person();
         Woman.Name = "Eve";
         Woman.Age = 24;
+        Person Child = new Person();
+        Child.Name = "Alice";
+        Child.Age = 12;
 
         Man.Greet();
         Woman.Greet();
+        Child.Greet();
     }
 
 }

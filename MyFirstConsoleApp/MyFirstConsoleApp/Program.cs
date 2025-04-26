@@ -1,29 +1,32 @@
-﻿public class Database
+﻿// Target interface
+public interface ITarget
 {
-    private static Database instance;
-    private static readonly object lockObject = new object();
+    void Request();
+}
 
-    // Private constructor prevents instantiation from other classes
-    private Database() { }
-
-    public static Database GetInstance()
+// Adaptee class
+public class Adaptee
+{
+    public void SpecificRequest()
     {
-        if (instance == null)
-        {
-            lock (lockObject)
-            {
-                if (instance == null)
-                {
-                    instance = new Database();
-                }
-            }
-        }
-        return instance;
+        Console.WriteLine("Specific request is called.");
+    }
+}
+
+// Adapter class
+public class Adapter : ITarget
+{
+    private Adaptee adaptee;
+
+    public Adapter(Adaptee adaptee)
+    {
+        this.adaptee = adaptee;
     }
 
-    public void Connect()
+    public void Request()
     {
-        Console.WriteLine("Database connected.");
+        // Convert the interface of Adaptee to the Target interface
+        adaptee.SpecificRequest();
     }
 }
 
@@ -31,10 +34,9 @@ public class Program
 {
     public static void Main()
     {
-        Database db1 = Database.GetInstance();
-        Database db2 = Database.GetInstance();
+        Adaptee adaptee = new Adaptee();
+        ITarget target = new Adapter(adaptee);
 
-        db1.Connect();
-        Console.WriteLine(object.ReferenceEquals(db1, db2)); // Outputs: True
+        target.Request(); // Outputs: Specific request is called.
     }
 }

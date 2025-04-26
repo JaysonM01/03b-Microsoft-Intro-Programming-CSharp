@@ -1,39 +1,42 @@
-﻿public abstract class Animal
+﻿public interface IObserver
 {
-    public abstract void Speak();
+    void Update(string message);
 }
 
-public class Dog : Animal
+public class ConcreteObserver : IObserver
 {
-    public override void Speak()
+    private string name;
+
+    public ConcreteObserver(string name)
     {
-        Console.WriteLine("Woof!");
+        this.name = name;
+    }
+
+    public void Update(string message)
+    {
+        Console.WriteLine($"{name} received message: {message}");
     }
 }
 
-public class Cat : Animal
+public class Subject
 {
-    public override void Speak()
-    {
-        Console.WriteLine("Meow!");
-    }
-}
+    private List<IObserver> observers = new List<IObserver>();
 
-public class AnimalFactory
-{
-    public static Animal CreateAnimal(string type)
+    public void Attach(IObserver observer)
     {
-        if (type == "Dog")
+        observers.Add(observer);
+    }
+
+    public void Detach(IObserver observer)
+    {
+        observers.Remove(observer);
+    }
+
+    public void Notify(string message)
+    {
+        foreach (var observer in observers)
         {
-            return new Dog();
-        }
-        else if (type == "Cat")
-        {
-            return new Cat();
-        }
-        else
-        {
-            throw new ArgumentException("Invalid animal type");
+            observer.Update(message);
         }
     }
 }
@@ -42,10 +45,15 @@ public class Program
 {
     public static void Main()
     {
-        Animal dog = AnimalFactory.CreateAnimal("Dog");
-        dog.Speak(); // Outputs: Woof!
+        Subject subject = new Subject();
 
-        Animal cat = AnimalFactory.CreateAnimal("Cat");
-        cat.Speak(); // Outputs: Meow!
+        IObserver observer1 = new ConcreteObserver("Observer 1");
+        IObserver observer2 = new ConcreteObserver("Observer 2");
+
+        subject.Attach(observer1);
+        subject.Attach(observer2);
+
+        subject.Notify("Hello, Observers!"); // Outputs: "Observer 1 received message: Hello, Observers!"
+                                            //          "Observer 2 received message: Hello, Observers!"
     }
 }

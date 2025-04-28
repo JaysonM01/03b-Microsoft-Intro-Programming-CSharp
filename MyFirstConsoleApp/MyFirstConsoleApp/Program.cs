@@ -1,28 +1,32 @@
 ﻿public class Program
 {
-public async Task<string> DownloadFileAsync(string fileName)
-{
-    Console.WriteLine($"Starting download of {fileName}...");
-    await Task.Delay(3000); // Simulate a 3-second download time
-    Console.WriteLine($"Completed download of {fileName}.");
-    return $"{fileName} content";
-}
-
-public async Task DownloadFilesAsync()
-{
-    // Start downloading "File1.txt" and "File2.txt" concurrently
-    var downloadTask1 = DownloadFileAsync("File1.txt");
-    var downloadTask2 = DownloadFileAsync("File2.txt");
+    public _____ Task ProcessDataChunkAsync(int chunkNumber)
+    {
+        Console.WriteLine($"Processing chunk {chunkNumber}...");
+        _____ Task.Delay(1000); // Simulate processing time
+        Console.WriteLine($"Completed processing of chunk {chunkNumber}.");
+    }
 
 
-    // Wait for both downloads to complete
-    await Task.WhenAll(downloadTask1, downloadTask2);
-    Console.WriteLine("All downloads completed.");
-}
+    public _____ Task ProcessLargeDatasetAsync(int numberOfChunks)
+    {
+        var tasks = new List<Task>();
 
-public static async Task Main(string[] args)
-{
-    Program program = new Program();
-    await program.DownloadFilesAsync();
-}
+        // Start processing each chunk concurrently
+        for (int i = 1; i <= numberOfChunks; i++)
+        {
+            tasks.Add(ProcessDataChunkAsync(i));
+        }
+
+        // Wait for all tasks to complete
+        _____ Task.WhenAll(tasks);
+
+        Console.WriteLine("All data chunks processed.");
+    }
+
+    public static _____ Task Main(string[] args)
+    {
+        Program program = new Program();
+        _____ program.ProcessLargeDatasetAsync(5); // Process 5 chunks
+    }
 }

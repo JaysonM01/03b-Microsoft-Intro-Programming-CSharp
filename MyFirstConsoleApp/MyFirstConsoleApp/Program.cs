@@ -4,9 +4,18 @@ public class Program
 {
     public async Task DownloadDataAsync()
     {
-        Console.WriteLine("Downloading Data...");
-        await Task.Delay(3000);
-        Console.WriteLine("Downloading Data Finished.");
+        
+        try
+        {
+            Console.WriteLine("Downloading Data...");
+            throw new InvalidOperationException("Download Error.");
+            await Task.Delay(3000);
+            Console.WriteLine("Downloading Data Finished.");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Error occurred: " + ex.Message);
+        }
     }
 
     public async Task DownloadDataAsync2()

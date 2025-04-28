@@ -1,37 +1,41 @@
-﻿using System.Threading.Tasks;
+﻿public class Product
+{
+    public string Name { get; set; }
+
+    public Product(string name)
+    {
+        Name = name;
+    }
+}
 
 public class Program
 {
-    public async Task DownloadDataAsync()
+    // Asynchronous method to fetch product data
+    public async Task<List<Product>> FetchProductsAsync()
     {
-        
-        try
+        await Task.Delay(2000); // Simulating a 2-second delay for data fetching
+        return new List<Product>
         {
-            Console.WriteLine("Downloading Data...");
-            throw new InvalidOperationException("Download Error.");
-            await Task.Delay(3000);
-            Console.WriteLine("Downloading Data Finished.");
-        }
-        catch (Exception ex)
+            new Product("Eco Bag"),
+            new Product("Reusable Straw")
+        };
+    }
+
+    // Asynchronous method to display product data
+    public async Task DisplayProductsAsync()
+    {
+        List<Product> products = await FetchProductsAsync();
+        foreach (Product product in products)
         {
-            Console.WriteLine("Error occurred: " + ex.Message);
+            Console.WriteLine(product.Name);
         }
     }
 
-    public async Task DownloadDataAsync2()
+    // Main entry point
+    public static async Task Main(string[] args)
     {
-        Console.WriteLine("Downloading Data2...");
-        await Task.Delay(1000);
-        Console.WriteLine("Downloading Data2 Finished.");
-    }
-
-
-    public static async Task Main()
-    {
+        // Calling the asynchronous method
         Program program = new Program();
-        Task task1 = program.DownloadDataAsync();
-        Task task2 = program.DownloadDataAsync2();
-        await Task.WhenAll(task1, task2);
-        Console.WriteLine("Program Done.");
+        await program.DisplayProductsAsync();
     }
 }

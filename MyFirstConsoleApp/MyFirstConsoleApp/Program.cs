@@ -1,14 +1,14 @@
 ﻿public class Program
 {
-    public _____ Task ProcessDataChunkAsync(int chunkNumber)
+    public async Task ProcessDataChunkAsync(int chunkNumber)
     {
         Console.WriteLine($"Processing chunk {chunkNumber}...");
-        _____ Task.Delay(1000); // Simulate processing time
+        await Task.Delay(1000); // Simulate processing time
         Console.WriteLine($"Completed processing of chunk {chunkNumber}.");
     }
 
 
-    public _____ Task ProcessLargeDatasetAsync(int numberOfChunks)
+    public async Task ProcessLargeDatasetAsync(int numberOfChunks)
     {
         var tasks = new List<Task>();
 
@@ -19,14 +19,14 @@
         }
 
         // Wait for all tasks to complete
-        _____ Task.WhenAll(tasks);
+        await Task.WhenAll(tasks);
 
         Console.WriteLine("All data chunks processed.");
     }
 
-    public static _____ Task Main(string[] args)
+    public static async Task Main(string[] args)
     {
         Program program = new Program();
-        _____ program.ProcessLargeDatasetAsync(5); // Process 5 chunks
+        await program.ProcessLargeDatasetAsync(5); // Process 5 chunks
     }
 }

@@ -1,24 +1,23 @@
-﻿using System.Threading.Tasks;
-
-public class Program
+﻿public class Program
 {
     public static async Task PerformLongOperationAsync()
     {
-        
         try
         {
-            await Task.Delay(1000);
-            throw new Exception("Process Failure");
+            Console.WriteLine("Operation started...");
+            await Task.Delay(3000); // Simulate a delay
+            throw new InvalidOperationException("Simulated long operation error.");
         }
         catch (Exception ex)
         {
-            Console.WriteLine("Error: " + ex.Message);
+            Console.WriteLine($"An error occurred: {ex.Message}");
         }
-        Console.WriteLine("Operation Finished"); 
     }
-    public static async Task Main()
+    public static void Main(string[] args)
     {
-        await Task.Run(() => PerformLongOperationAsync());
+        // Calling the asynchronous method
+        Task.Run(async () => await PerformLongOperationAsync()).Wait();
+        Console.WriteLine("Main method completed.");
     }
 
 }

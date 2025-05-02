@@ -12,7 +12,8 @@ class Library
     static void Main()
     {
         Console.WriteLine("Welcome to the Library!");
-        
+
+        // Adding books
         while (true)
         {
             Console.Write("\nEnter a book title to add (or type 'exit' to stop): ");
@@ -36,6 +37,29 @@ class Library
                 Console.WriteLine("No more books can be added. The library is full!");
                 break;
             }
+        }
+
+        // Removing books
+        while (true)
+        {
+            Console.Write("\nEnter the title of the book to remove (or type 'exit' to stop): ");
+            string removeTitle = Console.ReadLine();
+
+            if (removeTitle.ToLower() == "exit")
+                break;
+
+            if (removeTitle == book1)
+                book1 = "";
+            else if (removeTitle == book2)
+                book2 = "";
+            else if (removeTitle == book3)
+                book3 = "";
+            else if (removeTitle == book4)
+                book4 = "";
+            else if (removeTitle == book5)
+                book5 = "";
+            else
+                Console.WriteLine("Book not found in the library.");
         }
 
         // Display stored books

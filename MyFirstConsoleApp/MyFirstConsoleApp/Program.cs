@@ -4,8 +4,17 @@ public class Program
 {
     public static async Task PerformLongOperationAsync()
     {
-        await Task.Delay(1000);
-        Console.WriteLine("Operation Finished");
+        
+        try
+        {
+            await Task.Delay(1000);
+            throw new Exception("Process Failure");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Error: " + ex.Message);
+        }
+        Console.WriteLine("Operation Finished"); 
     }
     public static async Task Main()
     {

@@ -1,13 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 
 class Library
 {
-    // Variables to store book titles
-    static string book1 = "";
-    static string book2 = "";
-    static string book3 = "";
-    static string book4 = "";
-    static string book5 = "";
+    static List<string> books = new List<string>();
+    static int maxBooks = 5;
 
     static void Main()
     {
@@ -16,98 +13,94 @@ class Library
         bool running = true;
         while (running)
         {
+            DisplayBooks();
             Console.WriteLine("\nChoose an option:");
             Console.WriteLine("1. Add a book");
             Console.WriteLine("2. Remove a book");
-            Console.WriteLine("3. View books");
-            Console.WriteLine("4. Exit");
+            Console.WriteLine("3. Exit");
             Console.Write("Enter your choice: ");
             string choice = Console.ReadLine();
 
             switch (choice)
             {
                 case "1":
-                    AddBook();
+                    AddBooks(); // Continuous adding mode
                     break;
                 case "2":
-                    RemoveBook();
+                    RemoveBooks(); // Continuous removal mode
                     break;
                 case "3":
-                    DisplayBooks();
-                    break;
-                case "4":
                     running = false;
                     Console.WriteLine("Goodbye!");
                     break;
                 default:
-                    Console.WriteLine("Invalid choice. Please enter 1, 2, 3, or 4.");
+                    Console.WriteLine("Invalid choice. Please enter 1, 2, or 3.");
                     break;
             }
         }
     }
 
-    static void AddBook()
+    static void AddBooks()
     {
-        Console.Write("Enter a book title to add: ");
-        string bookTitle = Console.ReadLine();
-
-        if (string.IsNullOrEmpty(book1))
-            book1 = bookTitle;
-        else if (string.IsNullOrEmpty(book2))
-            book2 = bookTitle;
-        else if (string.IsNullOrEmpty(book3))
-            book3 = bookTitle;
-        else if (string.IsNullOrEmpty(book4))
-            book4 = bookTitle;
-        else if (string.IsNullOrEmpty(book5))
-            book5 = bookTitle;
-        else
+        while (books.Count < maxBooks)
         {
-            Console.WriteLine("No more books can be added. The library is full!");
-            return;
-        }
+            Console.Write("\nEnter a book title to add (or type 'exit' to stop): ");
+            string bookTitle = Console.ReadLine();
 
-        Console.WriteLine($"'{bookTitle}' has been added to the library.");
+            if (bookTitle.ToLower() == "exit")
+                break;
+
+            books.Add(bookTitle);
+            Console.WriteLine($"'{bookTitle}' has been added to the library.");
+
+            if (books.Count == maxBooks)
+            {
+                Console.WriteLine("Library is now full! No more books can be added.");
+                break;
+            }
+        }
     }
 
-    static void RemoveBook()
+    static void RemoveBooks()
     {
-        Console.Write("Enter the title of the book to remove: ");
-        string removeTitle = Console.ReadLine();
-
-        if (removeTitle == book1)
-            book1 = "";
-        else if (removeTitle == book2)
-            book2 = "";
-        else if (removeTitle == book3)
-            book3 = "";
-        else if (removeTitle == book4)
-            book4 = "";
-        else if (removeTitle == book5)
-            book5 = "";
-        else
+        while (books.Count > 0)
         {
-            Console.WriteLine("Book not found in the library.");
-            return;
-        }
+            Console.Write("\nEnter the title of the book to remove (or type 'exit' to stop): ");
+            string removeTitle = Console.ReadLine();
 
-        Console.WriteLine($"'{removeTitle}' has been removed from the library.");
+            if (removeTitle.ToLower() == "exit")
+                break;
+
+            if (books.Remove(removeTitle))
+            {
+                Console.WriteLine($"'{removeTitle}' has been removed from the library.");
+            }
+            else
+            {
+                Console.WriteLine("Book not found in the library.");
+            }
+
+            if (books.Count == 0)
+            {
+                Console.WriteLine("Library is now empty.");
+                break;
+            }
+        }
     }
 
     static void DisplayBooks()
     {
         Console.WriteLine("\nLibrary Collection:");
-        if (!string.IsNullOrEmpty(book1)) Console.WriteLine($"1. {book1}");
-        if (!string.IsNullOrEmpty(book2)) Console.WriteLine($"2. {book2}");
-        if (!string.IsNullOrEmpty(book3)) Console.WriteLine($"3. {book3}");
-        if (!string.IsNullOrEmpty(book4)) Console.WriteLine($"4. {book4}");
-        if (!string.IsNullOrEmpty(book5)) Console.WriteLine($"5. {book5}");
-
-        if (string.IsNullOrEmpty(book1) && string.IsNullOrEmpty(book2) &&
-            string.IsNullOrEmpty(book3) && string.IsNullOrEmpty(book4) &&
-            string.IsNullOrEmpty(book5))
+        if (books.Count == 0)
         {
             Console.WriteLine("The library is empty.");
+        }
+        else
+        {
+            for (int i = 0; i < books.Count; i++)
+            {
+                Console.WriteLine($"{i + 1}. {books[i]}");
+            }
         }
     }
 }

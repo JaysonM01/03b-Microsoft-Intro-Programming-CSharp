@@ -4,11 +4,12 @@ class LibraryManager
 {
     static void Main()
     {
-        string[] bookCollection = new string[5]; // Array to store book titles
+        string[] bookCollection = new string[5]; // Library book storage
+        string[] borrowedBooks = new string[3]; // Tracks borrowed books (max 3)
 
         while (true)
         {
-            Console.WriteLine("\nWould you like to add, remove, search for a book, or exit? (add/remove/search/exit)");
+            Console.WriteLine("\nWhat would you like to do? (add/remove/search/borrow/return/exit)");
             string userChoice = Console.ReadLine().ToLower();
 
             switch (userChoice)
@@ -22,21 +23,25 @@ class LibraryManager
                 case "search":
                     SearchBook(bookCollection);
                     break;
+                case "borrow":
+                    BorrowBook(bookCollection, borrowedBooks);
+                    break;
+                case "return":
+                    ReturnBook(borrowedBooks);
+                    break;
                 case "exit":
                     Console.WriteLine("Exiting the Library Manager. Goodbye!");
                     return;
                 default:
-                    Console.WriteLine("Invalid option. Please type 'add', 'remove', 'search', or 'exit'.");
+                    Console.WriteLine("Invalid option. Please type 'add', 'remove', 'search', 'borrow', 'return', or 'exit'.");
                     break;
             }
 
             DisplayBooks(bookCollection);
+            DisplayBorrowedBooks(borrowedBooks);
         }
     }
 
-    /// <summary>
-    /// Adds a new book to the library if space is available.
-    /// </summary>
     static void AddBook(string[] books)
     {
         int emptyIndex = FindEmptySlot(books);
@@ -51,9 +56,6 @@ class LibraryManager
         Console.WriteLine($"'{books[emptyIndex]}' has been added to the library.");
     }
 
-    /// <summary>
-    /// Removes a book from the library if it exists.
-    /// </summary>
     static void RemoveBook(string[] books)
     {
         Console.WriteLine("Enter the title of the book to remove:");
@@ -71,33 +73,60 @@ class LibraryManager
         }
     }
 
-    /// <summary>
-    /// Searches for a book in the library and displays whether it exists.
-    /// </summary>
     static void SearchBook(string[] books)
     {
         Console.WriteLine("Enter the title of the book to search:");
         string bookToSearch = Console.ReadLine();
 
         int bookIndex = FindBookIndex(books, bookToSearch);
-        if (bookIndex == -1)
-        {
-            Console.WriteLine($"'{bookToSearch}' is not in the library collection.");
-        }
-        else
-        {
-            Console.WriteLine($"'{bookToSearch}' is available in the library.");
-        }
+        Console.WriteLine(bookIndex == -1 
+            ? $"'{bookToSearch}' is not in the library collection."
+            : $"'{bookToSearch}' is available in the library.");
     }
 
-    /// <summary>
-    /// Displays all available books in the library.
-    /// </summary>
+    static void BorrowBook(string[] books, string[] borrowedBooks)
+    {
+        if (FindEmptySlot(borrowedBooks) == -1)
+        {
+            Console.WriteLine("You have reached your borrowing limit of 3 books.");
+            return;
+        }
+
+        Console.WriteLine("Enter the title of the book to borrow:");
+        string bookToBorrow = Console.ReadLine();
+
+        int bookIndex = FindBookIndex(books, bookToBorrow);
+        if (bookIndex == -1 || string.IsNullOrEmpty(books[bookIndex]))
+        {
+            Console.WriteLine("Book not available for borrowing.");
+            return;
+        }
+
+        books[bookIndex] = ""; // Remove from library
+        borrowedBooks[FindEmptySlot(borrowedBooks)] = bookToBorrow; // Add to borrowed books
+        Console.WriteLine($"You have borrowed '{bookToBorrow}'.");
+    }
+
+    static void ReturnBook(string[] borrowedBooks)
+    {
+        Console.WriteLine("Enter the title of the book to return:");
+        string bookToReturn = Console.ReadLine();
+
+        int bookIndex = FindBookIndex(borrowedBooks, bookToReturn);
+        if (bookIndex == -1)
+        {
+            Console.WriteLine("This book is not in your borrowed list.");
+            return;
+        }
+
+        borrowedBooks[bookIndex] = "";
+        Console.WriteLine($"You have returned '{bookToReturn}'.");
+    }
+
     static void DisplayBooks(string[] books)
     {
         Console.WriteLine("\nAvailable books:");
         bool hasBooks = false;
-
         foreach (string book in books)
         {
             if (!string.IsNullOrEmpty(book))
@@ -106,37 +135,38 @@ class LibraryManager
                 hasBooks = true;
             }
         }
-
-        if (!hasBooks)
-        {
-            Console.WriteLine("The library is empty.");
-        }
+        if (!hasBooks) Console.WriteLine("The library is empty.");
     }
 
-    /// <summary>
-    /// Finds the first empty slot in the book array.
-    /// </summary>
-    /// <returns>Index of an empty slot, or -1 if the library is full.</returns>
+    static void DisplayBorrowedBooks(string[] borrowedBooks)
+    {
+        Console.WriteLine("\nYour borrowed books:");
+        bool hasBorrowedBooks = false;
+        foreach (string book in borrowedBooks)
+        {
+            if (!string.IsNullOrEmpty(book))
+            {
+                Console.WriteLine($"- {book}");
+                hasBorrowedBooks = true;
+            }
+        }
+        if (!hasBorrowedBooks) Console.WriteLine("You have not borrowed any books.");
+    }
+
     static int FindEmptySlot(string[] books)
     {
         for (int i = 0; i < books.Length; i++)
         {
-            if (string.IsNullOrEmpty(books[i]))
-                return i;
+            if (string.IsNullOrEmpty(books[i])) return i;
         }
         return -1;
     }
 
-    /// <summary>
-    /// Finds the index of a book in the array.
-    /// </summary>
-    /// <returns>Index of the book if found, or -1 if not found.</returns>
     static int FindBookIndex(string[] books, string bookTitle)
     {
         for (int i = 0; i < books.Length; i++)
         {
-            if (books[i] == bookTitle)
-                return i;
+            if (books[i] == bookTitle) return i;
         }
         return -1;
     }

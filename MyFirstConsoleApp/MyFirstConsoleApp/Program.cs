@@ -8,7 +8,7 @@ class LibraryManager
 
         while (true)
         {
-            Console.WriteLine("\nWould you like to add or remove a book? (add/remove/exit)");
+            Console.WriteLine("\nWould you like to add, remove, search for a book, or exit? (add/remove/search/exit)");
             string userChoice = Console.ReadLine().ToLower();
 
             switch (userChoice)
@@ -19,11 +19,14 @@ class LibraryManager
                 case "remove":
                     RemoveBook(bookCollection);
                     break;
+                case "search":
+                    SearchBook(bookCollection);
+                    break;
                 case "exit":
                     Console.WriteLine("Exiting the Library Manager. Goodbye!");
                     return;
                 default:
-                    Console.WriteLine("Invalid option. Please type 'add', 'remove', or 'exit'.");
+                    Console.WriteLine("Invalid option. Please type 'add', 'remove', 'search', or 'exit'.");
                     break;
             }
 
@@ -65,6 +68,25 @@ class LibraryManager
         {
             books[bookIndex] = "";
             Console.WriteLine($"'{bookToRemove}' has been removed from the library.");
+        }
+    }
+
+    /// <summary>
+    /// Searches for a book in the library and displays whether it exists.
+    /// </summary>
+    static void SearchBook(string[] books)
+    {
+        Console.WriteLine("Enter the title of the book to search:");
+        string bookToSearch = Console.ReadLine();
+
+        int bookIndex = FindBookIndex(books, bookToSearch);
+        if (bookIndex == -1)
+        {
+            Console.WriteLine($"'{bookToSearch}' is not in the library collection.");
+        }
+        else
+        {
+            Console.WriteLine($"'{bookToSearch}' is available in the library.");
         }
     }
 

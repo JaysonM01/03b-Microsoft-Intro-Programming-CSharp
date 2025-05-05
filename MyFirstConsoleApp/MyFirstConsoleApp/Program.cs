@@ -4,12 +4,13 @@ class LibraryManager
 {
     static void Main()
     {
-        string[] bookCollection = new string[5]; // Library book storage
-        string[] borrowedBooks = new string[3]; // Tracks borrowed books (max 3)
+        string[] bookCollection = new string[5]; // Library storage
+        string[] borrowedBooks = new string[3];  // Tracks borrowed books (max 3)
+        bool[] checkedOutBooks = new bool[5];    // Tracks if books are checked out
 
         while (true)
         {
-            Console.WriteLine("\nWhat would you like to do? (add/remove/search/borrow/return/exit)");
+            Console.WriteLine("\nWhat would you like to do? (add/remove/search/borrow/checkin/exit)");
             string userChoice = Console.ReadLine().ToLower();
 
             switch (userChoice)
@@ -24,21 +25,22 @@ class LibraryManager
                     SearchBook(bookCollection);
                     break;
                 case "borrow":
-                    BorrowBook(bookCollection, borrowedBooks);
+                    BorrowBook(bookCollection, borrowedBooks, checkedOutBooks);
                     break;
-                case "return":
-                    ReturnBook(borrowedBooks);
+                case "checkin":
+                    CheckInBook(bookCollection, borrowedBooks, checkedOutBooks);
                     break;
                 case "exit":
                     Console.WriteLine("Exiting the Library Manager. Goodbye!");
                     return;
                 default:
-                    Console.WriteLine("Invalid option. Please type 'add', 'remove', 'search', 'borrow', 'return', or 'exit'.");
+                    Console.WriteLine("Invalid option. Please type 'add', 'remove', 'search', 'borrow', 'checkin', or 'exit'.");
                     break;
             }
 
             DisplayBooks(bookCollection);
             DisplayBorrowedBooks(borrowedBooks);
+            DisplayCheckedStatus(bookCollection,checkedOutBooks);
         }
     }
 
@@ -84,7 +86,7 @@ class LibraryManager
             : $"'{bookToSearch}' is available in the library.");
     }
 
-    static void BorrowBook(string[] books, string[] borrowedBooks)
+    static void BorrowBook(string[] books, string[] borrowedBooks, bool[] checkedOutBooks)
     {
         if (FindEmptySlot(borrowedBooks) == -1)
         {
@@ -103,24 +105,36 @@ class LibraryManager
         }
 
         books[bookIndex] = ""; // Remove from library
+        checkedOutBooks[bookIndex] = true; // Mark book as checked out
         borrowedBooks[FindEmptySlot(borrowedBooks)] = bookToBorrow; // Add to borrowed books
         Console.WriteLine($"You have borrowed '{bookToBorrow}'.");
     }
 
-    static void ReturnBook(string[] borrowedBooks)
+    static void CheckInBook(string[] books, string[] borrowedBooks, bool[] checkedOutBooks)
     {
-        Console.WriteLine("Enter the title of the book to return:");
-        string bookToReturn = Console.ReadLine();
+        Console.WriteLine("Enter the title of the book to check in:");
+        string bookToCheckIn = Console.ReadLine();
 
-        int bookIndex = FindBookIndex(borrowedBooks, bookToReturn);
-        if (bookIndex == -1)
+        int borrowedIndex = FindBookIndex(borrowedBooks, bookToCheckIn);
+        if (borrowedIndex == -1)
         {
             Console.WriteLine("This book is not in your borrowed list.");
             return;
         }
 
-        borrowedBooks[bookIndex] = "";
-        Console.WriteLine($"You have returned '{bookToReturn}'.");
+        borrowedBooks[borrowedIndex] = ""; // Remove from borrowed list
+        int libraryIndex = FindEmptySlot(books); // Find an empty spot in the library
+
+        if (libraryIndex != -1)
+        {
+            books[libraryIndex] = bookToCheckIn; // Restore book to the library
+            checkedOutBooks[libraryIndex] = false; // Mark as checked in
+            Console.WriteLine($"'{bookToCheckIn}' has been returned and checked in successfully.");
+        }
+        else
+        {
+            Console.WriteLine("The library is full. The book could not be checked in.");
+        }
     }
 
     static void DisplayBooks(string[] books)
@@ -170,4 +184,22 @@ class LibraryManager
         }
         return -1;
     }
+
+    static void DisplayCheckedStatus(string[] books, bool[] checkedOutBooks)
+    {
+        Console.WriteLine("\nLibrary Book Status:");
+        for (int i = 0; i < books.Length; i++)
+        {
+            if (!string.IsNullOrEmpty(books[i]))
+            {
+                Console.WriteLine($"- {books[i]} (Checked In)");
+            }
+            else if (checkedOutBooks[i])
+            {
+                Console.WriteLine($"- Book {i + 1} (Checked Out)");
+            }
+        }
+    }
+
+// Call this method after any operation that modifies the library's books or borrowing status
 }

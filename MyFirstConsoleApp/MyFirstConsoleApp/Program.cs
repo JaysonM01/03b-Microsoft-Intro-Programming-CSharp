@@ -14,27 +14,34 @@ class Library
         while (running)
         {
             DisplayBooks();
-            Console.WriteLine("\nChoose an option:");
-            Console.WriteLine("1. Add a book");
-            Console.WriteLine("2. Remove a book");
-            Console.WriteLine("3. Exit");
+
+            Console.WriteLine("\nChoose an action:");
+            if (books.Count < maxBooks) Console.WriteLine("'add' - Add books continuously");
+            if (books.Count > 0) Console.WriteLine("'remove' - Remove books continuously");
+            Console.WriteLine("'exit' - Exit program");
             Console.Write("Enter your choice: ");
-            string choice = Console.ReadLine();
+
+            string choice;
+            while (true)
+            {
+                choice = Console.ReadLine().ToLower();
+                if ((choice == "add" && books.Count < maxBooks) || (choice == "remove" && books.Count > 0) || choice == "exit")
+                    break;
+                else
+                    Console.Write("Invalid input. Please enter a valid option: ");
+            }
 
             switch (choice)
             {
-                case "1":
-                    AddBooks(); // Continuous adding mode
+                case "add":
+                    AddBooks();
                     break;
-                case "2":
-                    RemoveBooks(); // Continuous removal mode
+                case "remove":
+                    RemoveBooks();
                     break;
-                case "3":
+                case "exit":
                     running = false;
                     Console.WriteLine("Goodbye!");
-                    break;
-                default:
-                    Console.WriteLine("Invalid choice. Please enter 1, 2, or 3.");
                     break;
             }
         }

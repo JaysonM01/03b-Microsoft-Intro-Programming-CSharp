@@ -11,7 +11,7 @@ class LibraryManager
         while (true)
         {
             Console.WriteLine("\nWould you like to add or remove a book? (add/remove/exit)");
-            string action = GetValidInput();
+            string action = GetValidInput().ToLower(); // Convert input to lowercase for case insensitivity
 
             if (action == "add")
             {
